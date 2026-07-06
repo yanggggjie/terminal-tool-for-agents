@@ -156,7 +156,7 @@ tta sess start -> (tta act ... -> tta obs screen stable)* -> tta sess kill
 
 失败时输出一行 `error: <reason>`，退出码为 1。
 
-完整命令模板和错误处理见 [`skills/tta/zh/SKILL.md`](./skills/tta/zh/SKILL.md)。
+工作流见 [`skills/tta/zh/SKILL.md`](./skills/tta/zh/SKILL.md)；命令模板见 [`api-reference.md`](./skills/tta/zh/api-reference.md)；故障排查见 [`troubleshooting.md`](./skills/tta/zh/troubleshooting.md)。
 
 ## 环境要求
 

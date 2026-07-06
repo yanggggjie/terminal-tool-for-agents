@@ -155,7 +155,7 @@ tta sess start -> (tta act ... -> tta obs screen stable)* -> tta sess kill
 
 On failure, tta prints one line: `error: <reason>` and exits with code 1.
 
-Full command templates and error handling: [`skills/tta/SKILL.md`](./skills/tta/SKILL.md).
+Workflow: [`skills/tta/SKILL.md`](./skills/tta/SKILL.md). Command templates: [`api-reference.md`](./skills/tta/api-reference.md). Troubleshooting: [`troubleshooting.md`](./skills/tta/troubleshooting.md).
 
 ## Requirements
 
