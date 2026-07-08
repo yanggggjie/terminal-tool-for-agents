@@ -42,6 +42,8 @@ tta obs screen scroll --sess=<name> --dire=<up|down|top|bottom>
 - Do not rely on `act` stdout; use `obs` to read the screen.
 - Agents must not use `tta sess watch`.
 - Exited sessions can still be read with `obs`; `act` fails. Read the final output, then `sess kill`.
+- `obs screen now` returns immediately — good for polling multiple sessions; `obs screen stable` waits for stability — good for sequential single-task waits.
+- When output exceeds the screen, use `obs screen scroll --dire=down` to read history.
 
 Common quoting error:
 
@@ -73,6 +75,11 @@ tta obs screen stable --sess=vite-once
 tta act send key --sess=vite-once --key=arrow_down
 tta act send key --sess=vite-once --key=enter
 tta obs screen stable --sess=vite-once
+
+# dev server: keep session after start; do not kill until observation is done
+tta sess start --sess=dev --cmd="npm run dev" --cwd="/Users/you/project"
+tta obs screen stable --sess=dev
+# continue obs as needed; sess kill only after confirming no issues
 
 # REPL multi-line: do not paste line by line; use exec or a script
 tta act send text --sess=pyrepl <<'EOF'

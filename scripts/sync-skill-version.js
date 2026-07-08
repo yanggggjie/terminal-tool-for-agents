@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
- * Sync skill frontmatter versions from package.json.
+ * Sync main SKILL.md frontmatter version from package.json.
  * Runs in release-it `after:bump` hook (see .release-it.json).
+ * Sub-skills (tta-agents-skill.md, etc.) intentionally have no version field.
  */
 const fs = require("fs");
 const path = require("path");

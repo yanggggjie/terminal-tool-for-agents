@@ -1,5 +1,7 @@
 # Orchestrator.md template
 
+When writing to the project, **translate the entire file into the language the user is using**. Below is an English structural reference.
+
 ````markdown
 # Orchestrator
 
@@ -41,6 +43,8 @@ Default to serial scheduling:
 
 Multiple worker sessions may stay open to preserve context; one task chain advances one step at a time unless Human explicitly asks for parallel work.
 
+Poll multiple sessions with `tta obs screen now`; block-wait on one Worker with `tta obs screen stable`.
+
 ## Worker Sessions
 
 Session name examples:
@@ -50,13 +54,24 @@ Session name examples:
 - `worker-test-cursor`
 - `worker-research-opencode`
 
-Start workers with the least permissions sufficient for the task. Startup commands: see `worker-commands.md`.
+### Startup commands
+
+| Coding Agent | `--cmd="..."` |
+|--------------|---------------|
+| Claude Code | `claude --dangerously-skip-permissions` |
+| Codex | `codex --sandbox workspace-write --ask-for-approval never` |
+| Cursor Agent | `agent --yolo --sandbox disabled` |
+| OpenCode | `opencode` |
+| Pi | `pi` |
+| Kimi Code | `kimi --auto` |
+
+Start workers with the least permissions sufficient for the task.
 
 ## Worker Prompt Contract
 
-Every worker prompt must include Task, Working directory, Allowed, Forbidden, and completion summary requirements. `Forbidden` must include `Using tta`.
+Every worker prompt must include task, working directory, allowed actions, forbidden actions, and completion summary requirements. Forbidden must include `Using tta`. **Write the full prompt in the language Human is using.**
 
-Prompt template:
+Template:
 
 ```text
 You are a coding worker. Do NOT use tta.
@@ -76,7 +91,7 @@ When done, summarize what you did, files changed if any, tests run, and any bloc
 
 ## Handoff Rules
 
-When passing output from one worker to another, Orchestrator sends only necessary context and does not ask workers to inspect other sessions. Human-facing updates come from Orchestrator.
+When passing output from one worker to another, Orchestrator sends only necessary context and does not ask workers to inspect other sessions. Human-facing updates come from Orchestrator, in Human's language.
 
 ## Completion
 

@@ -22,6 +22,38 @@ If you are still manually operating interactive terminal programs, manually star
 
 Forked from [tui-use](https://github.com/onesuper/tui-use) and modified for `tta`. Thanks to [onesuper](https://github.com/onesuper) for the original work.
 
+## Quick Start
+
+**Install CLI:**
+
+```bash
+npm install -g terminal-tool-for-agents
+```
+
+**Install skill:**
+
+```bash
+npx skills add yanggggjie/terminal-tool-for-agents
+```
+
+The CLI will interactively ask for install scope (global/project), target agents (Cursor, Claude Code, etc.), and install method. Choose as needed.
+
+Chinese skill source files live in [`skills-zh/tta/`](./skills-zh/tta/) for repository maintenance only; users should install with `npx skills add` above.
+
+**Ask your agent to use tta:**
+
+```text
+Use tta to start a Codex session and review the code in my last commit.
+```
+
+**Observe sessions:**
+
+```bash
+tta sess watch
+```
+
+Then open http://127.0.0.1:7654/.
+
 ## Flexible options
 
 | Mode | Best for | Docs |
@@ -44,7 +76,7 @@ Let an agent operate an interactive terminal.
 
 Steps:
 
-1. Install the `tta` CLI and skills using Quick Start below.
+1. Install the `tta` CLI and skills using Quick Start above.
 2. Tell your agent directly: use `tta` with `pdb` to finish the debugging task.
 3. Run `tta sess watch` to observe.
 
@@ -60,7 +92,7 @@ Let an agent start another coding agent for a task.
 
 Steps:
 
-1. Install the `tta` CLI and skills using Quick Start below.
+1. Install the `tta` CLI and skills using Quick Start above.
 2. Tell your agent directly: use `tta` to start another coding agent for review.
 3. Run `tta sess watch` to observe.
 
@@ -77,7 +109,7 @@ Let multiple coding agents collaborate through `Orchestrator.md`.
 
 Steps:
 
-1. Install the `tta` CLI and skills using Quick Start below.
+1. Install the `tta` CLI and skills using Quick Start above.
 2. Tell your agent to create an `Orchestrator.md`.
 3. Ask the agent to strictly follow `Orchestrator.md` and become the Orchestrator.
 4. Give the agent the task you want completed.
@@ -85,58 +117,16 @@ Steps:
 
 [Example recording: using Orchestrator to have Claude Code and Codex play Gomoku](https://youtu.be/52gOo3hJYv4)
 
-[Why tta-agents?](./docs/why-tta-agents.md)
 
-## Quick Start
+## [Why tta-agents?](./docs/why-tta-agents.md)
 
-**Copy this into your agent to install:**
 
-```text
-Install tta CLI:
-npm install -g terminal-tool-for-agents
-
-Install tta skills from GitHub:
-Use this directory listing:
-https://api.github.com/repos/yanggggjie/terminal-tool-for-agents/contents/skills/tta?ref=main
-
-Install every top-level .md skill file in that directory.
-Do not install anything under skills/tta/zh/.
-Do not hard-code the file list; discover it from the directory listing.
-
-Confirm CLI and all discovered top-level skill files are installed.
-```
-
-**Ask your agent to use tta:**
-
-```text
-Use tta to run an interactive terminal program and finish the task.
-```
-
-**Observe sessions:**
-
-```bash
-tta sess watch
-```
-
-Then open http://127.0.0.1:7654/.
 
 ## Update
 
-Copy this block into your agent:
-
-```text
-Update tta CLI:
+```bash
 npm update -g terminal-tool-for-agents
-
-Update tta skills from GitHub:
-Use this directory listing:
-https://api.github.com/repos/yanggggjie/terminal-tool-for-agents/contents/skills/tta?ref=main
-
-Update every top-level .md skill file in that directory.
-Do not install anything under skills/tta/zh/.
-Do not hard-code the file list; discover it from the directory listing.
-
-Confirm CLI and all discovered top-level skill files are updated.
+npx skills update yanggggjie/terminal-tool-for-agents
 ```
 
 ## API overview
@@ -170,11 +160,13 @@ For local development:
 just install-dev-version
 ```
 
-Builds, installs the current repo globally; `postinstall` runs `tta sess killall` to stop the old server.
+Builds and installs the current repo globally; `postinstall` runs `tta sess killall` to stop the old server.
 
-```bash
-tta sess list    # verify CLI
-tta sess watch   # http://127.0.0.1:7654
+If you are modifying tta skills, tell your test agent:
+
+```text
+Always use the local tta skills, not the installed tta skills.
+Local tta skills path: @YOURPATH/terminal-tool-for-agents/skills/tta
 ```
 
 Restore the published npm release:

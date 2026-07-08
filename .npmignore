@@ -21,4 +21,4 @@ rebuild.js
 
 # Chinese docs (repo only; not published to npm)
 docs/
-skills/tta/zh/
+skills-zh/

@@ -42,6 +42,8 @@ tta obs screen scroll --sess=<name> --dire=<up|down|top|bottom>
 - 不要依赖 `act` 的 stdout；用 `obs` 读屏。
 - Agent 不要用 `tta sess watch`。
 - 已退出 session 仍可 `obs` 读取最终输出；`act` 会失败。读完后 `sess kill`。
+- `obs screen now` 立即返回，适合轮询多个 session；`obs screen stable` 等待稳定，适合顺序等待单个任务。
+- 输出超出屏幕时用 `obs screen scroll --dire=down` 向上翻读历史。
 
 常见引号错误：
 
@@ -73,6 +75,11 @@ tta obs screen stable --sess=vite-once
 tta act send key --sess=vite-once --key=arrow_down
 tta act send key --sess=vite-once --key=enter
 tta obs screen stable --sess=vite-once
+
+# dev server：启动后保留 session，观察完毕前不要 kill
+tta sess start --sess=dev --cmd="npm run dev" --cwd="/Users/you/project"
+tta obs screen stable --sess=dev
+# 需要时继续 obs；确认无问题后再 sess kill
 
 # REPL 多行：不要逐行粘贴，用 exec 或脚本
 tta act send text --sess=pyrepl <<'EOF'

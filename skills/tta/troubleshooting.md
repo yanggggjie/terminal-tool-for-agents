@@ -9,3 +9,6 @@
 | REPL stuck at continuation prompt | Try an empty line; if still stuck, use `ctrl+c`, then switch to a script, paste/editor mode, or `exec("""...""")` |
 | Start failed | `sess list` -> `obs screen stable` to read errors -> `sess kill` |
 | Monitoring apps (such as `htop`) | Screen will not stabilize; use `obs screen now`, not `obs screen stable` |
+| Output exceeds screen | `obs screen scroll --dire=down` to page; `scroll --dire=top` to return to top |
+| dev server still running | Do not `sess kill`; observe with `obs`; clean up only after confirming |
+| `sess list` status | `running`: `act`/`obs` work; `exited`: only `obs` for final output, then `kill` |

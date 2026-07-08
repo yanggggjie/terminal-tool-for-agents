@@ -1,5 +1,7 @@
 # Orchestrator.md 模板
 
+写入项目时，**全文翻译为使用者正在使用的语言**。下方为中文结构参考。
+
 ````markdown
 # Orchestrator
 
@@ -41,6 +43,8 @@ Workers 不得使用 tta，不得加载 tta skill，不得彼此直接通信。
 
 可以保留多个 worker sessions 来保存上下文；除非 Human 明确要求并行，同一任务链一次只推进一个步骤。
 
+多 session 轮询用 `tta obs screen now`；单 Worker 阻塞等待用 `tta obs screen stable`。
+
 ## Worker Sessions
 
 session 名示例：
@@ -50,33 +54,44 @@ session 名示例：
 - `worker-test-cursor`
 - `worker-research-opencode`
 
-用足以完成任务的最小权限启动 workers。启动命令见 `worker-commands.md`。
+### 启动命令
+
+| Coding Agent | `--cmd="..."` |
+|--------------|---------------|
+| Claude Code | `claude --dangerously-skip-permissions` |
+| Codex | `codex --sandbox workspace-write --ask-for-approval never` |
+| Cursor Agent | `agent --yolo --sandbox disabled` |
+| OpenCode | `opencode` |
+| Pi | `pi` |
+| Kimi Code | `kimi --auto` |
+
+用足以完成任务的最小权限启动 workers。
 
 ## Worker Prompt Contract
 
-每个 worker prompt 都必须包含 Task、Working directory、Allowed、Forbidden、完成摘要要求。`Forbidden` 必须包含 `Using tta`。
+每个 worker prompt 都必须包含任务、工作目录、允许、禁止、完成摘要要求。禁止项必须包含「使用 tta」。**Prompt 全文使用 Human 正在使用的语言。**
 
-Prompt 模板：
+模板：
 
 ```text
-You are a coding worker. Do NOT use tta.
+你是一个 coding worker。不要使用 tta。
 
-Task: <specific task>
-Working directory: /absolute/path/to/project
+任务：<具体任务>
+工作目录：/absolute/path/to/project
 
-Allowed:
-- Read and write files under the directory that contains Orchestrator.md and its subdirectories.
+允许：
+- 读取和修改 Orchestrator.md 所在目录及其子目录下的文件。
 
-Forbidden:
-- <forbidden action>
-- Using tta
+禁止：
+- <禁止操作>
+- 使用 tta
 
-When done, summarize what you did, files changed if any, tests run, and any blockers.
+完成后，总结你做了什么、改了哪些文件（如有）、跑了哪些测试、有无阻塞项。
 ```
 
 ## 交接规则
 
-把一个 worker 的输出转交给另一个 worker 时，Orchestrator 只发送必要上下文，不要求 workers 检查其他 sessions。面向 Human 的更新由 Orchestrator 给出。
+把一个 worker 的输出转交给另一个 worker 时，Orchestrator 只发送必要上下文，不要求 workers 检查其他 sessions。面向 Human 的更新由 Orchestrator 给出，使用 Human 的语言。
 
 ## 完成标准
 

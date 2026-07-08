@@ -28,8 +28,7 @@
     "dist/",
     ".npmrc",
     "scripts/install.js",
-    "skills/tta/SKILL.md",
-    "skills/tta/tta-agents-skill.md",
+    "skills/tta/",
     "src/watch-ui/logo.png",
     "README.md",
     "LICENSE"

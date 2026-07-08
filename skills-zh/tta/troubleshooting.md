@@ -9,3 +9,6 @@
 | REPL 卡在多行提示符 | 先试空行；仍卡住用 `ctrl+c`，改用脚本、paste/editor 模式或 `exec("""...""")` |
 | 启动失败 | `sess list` -> `obs screen stable` 读错误 -> `sess kill` |
 | 监控型应用（如 `htop`） | 屏幕不会稳定；用 `obs screen now`，不要用 `obs screen stable` |
+| 输出超出屏幕 | `obs screen scroll --dire=down` 翻页；读完再 `scroll --dire=top` 回顶 |
+| dev server 还在跑 | 不要 `sess kill`；用 `obs` 观察；确认后再清理 |
+| `sess list` 状态 | `running` 可 `act`/`obs`；`exited` 只能 `obs` 读最终输出，然后 `kill` |

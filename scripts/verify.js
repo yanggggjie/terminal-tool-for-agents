@@ -18,6 +18,7 @@ const required = [
   "dist/watch-ui/vendor/xterm.js",
   "skills/tta/SKILL.md",
   "skills/tta/tta-agents-skill.md",
+  "skills/tta/create-tta-agens-orchestrator-skill.md",
 ];
 
 function run(cmd) {
@@ -53,6 +54,20 @@ for (const rel of skillPaths) {
   }
 }
 
+const noVersionSkills = [
+  "skills/tta/tta-agents-skill.md",
+  "skills/tta/create-tta-agens-orchestrator-skill.md",
+  "skills-zh/tta/tta-agents-skill.md",
+  "skills-zh/tta/create-tta-agens-orchestrator-skill.md",
+];
+for (const rel of noVersionSkills) {
+  const skillContent = fs.readFileSync(path.join(root, rel), "utf8");
+  if (/^version:\s*.+$/m.test(skillContent)) {
+    process.stderr.write(`verify: ${rel} must not have a version field (only main SKILL.md does)\n`);
+    process.exit(1);
+  }
+}
+
 const dryRun = execSync("npm pack --dry-run 2>&1", { cwd: root, encoding: "utf8" });
 for (const rel of [
   "dist/watch-ui/index.html",
@@ -69,8 +84,8 @@ for (const rel of [
 }
 
 for (const rel of [
-  "skills/tta/zh/SKILL.md",
-  "skills/tta/zh/tta-agents-skill.md",
+  "skills-zh/tta/SKILL.md",
+  "skills-zh/tta/tta-agents-skill.md",
   "docs/zh/tta-agents-docs.md",
   "docs/zh/tta-agents-orchestrator.md",
   "docs/tta-agents-docs.md",

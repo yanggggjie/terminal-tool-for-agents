@@ -22,6 +22,38 @@
 
 Fork 自 [tui-use](https://github.com/onesuper/tui-use) 并改造为 `tta`。感谢 [onesuper](https://github.com/onesuper) 的原始工作。
 
+## 快速开始
+
+**安装 CLI：**
+
+```bash
+npm install -g terminal-tool-for-agents
+```
+
+**安装 skill：**
+
+```bash
+npx skills add yanggggjie/terminal-tool-for-agents
+```
+
+运行后 CLI 会交互式询问安装范围（全局/项目）、目标 agent（Cursor、Claude Code 等）和安装方式，按需选择即可。
+
+中文 skill 源文件在 [`skills-zh/tta/`](./skills-zh/tta/)，仅供仓库维护；用户安装请用上方 `npx skills add`。
+
+**让 Agent 使用 tta**：
+
+```text
+使用 tta 开启一个codex，来帮我 review 上一个 commit 的代码
+```
+
+**观察 session**：
+
+```bash
+tta sess watch
+```
+
+然后打开 http://127.0.0.1:7654/。
+
 ## 提供灵活选择
 
 | 方式 | 适合场景 | 文档 |
@@ -44,7 +76,7 @@ Fork 自 [tui-use](https://github.com/onesuper/tui-use) 并改造为 `tta`。感
 
 步骤：
 
-1. 按下面的“快速开始”安装 `tta` CLI 和 skills。
+1. 按上面的“快速开始”安装 `tta` CLI 和 skills。
 2. 直接告诉 Agent：用 `tta` 使用 `pdb` 完成调试任务。
 3. 运行 `tta sess watch` 进行观察。
 
@@ -60,7 +92,7 @@ Fork 自 [tui-use](https://github.com/onesuper/tui-use) 并改造为 `tta`。感
 
 步骤：
 
-1. 按下面的“快速开始”安装 `tta` CLI 和 skills。
+1. 按上面的“快速开始”安装 `tta` CLI 和 skills。
 2. 直接告诉 Agent：使用 `tta` 开启另一个 Coding Agent 进行 review。
 3. 运行 `tta sess watch` 进行观察。
 
@@ -77,7 +109,7 @@ Fork 自 [tui-use](https://github.com/onesuper/tui-use) 并改造为 `tta`。感
 
 步骤：
 
-1. 按下面的“快速开始”安装 `tta` CLI 和 skills。
+1. 按上面的“快速开始”安装 `tta` CLI 和 skills。
 2. 告诉 Agent 创建一个 `Orchestrator.md`。
 3. 让 Agent 严格遵循 `Orchestrator.md`，成为 Orchestrator。
 4. 向 Agent 下达你要完成的任务。
@@ -88,56 +120,13 @@ Fork 自 [tui-use](https://github.com/onesuper/tui-use) 并改造为 `tta`。感
 
 ## [为什么使用 tta-agents？](./docs/zh/why-tta-agents.md)
 
-## 快速开始
 
-**复制给你的 Agent 来安装**：
-
-```text
-Install tta CLI:
-npm install -g terminal-tool-for-agents
-
-Install tta skills from GitHub:
-Use this directory listing:
-https://api.github.com/repos/yanggggjie/terminal-tool-for-agents/contents/skills/tta?ref=main
-
-Install every top-level .md skill file in that directory.
-Do not install anything under skills/tta/zh/.
-Do not hard-code the file list; discover it from the directory listing.
-
-Confirm CLI and all discovered top-level skill files are installed.
-```
-
-**让 Agent 使用 tta**：
-
-```text
-Use tta to run an interactive terminal program and finish the task.
-```
-
-**观察 session**：
-
-```bash
-tta sess watch
-```
-
-然后打开 http://127.0.0.1:7654/。
 
 ## 更新
 
-将下面这段复制给你的 Agent：
-
-```text
-Update tta CLI:
+```bash
 npm update -g terminal-tool-for-agents
-
-Update tta skills from GitHub:
-Use this directory listing:
-https://api.github.com/repos/yanggggjie/terminal-tool-for-agents/contents/skills/tta?ref=main
-
-Update every top-level .md skill file in that directory.
-Do not install anything under skills/tta/zh/.
-Do not hard-code the file list; discover it from the directory listing.
-
-Confirm CLI and all discovered top-level skill files are updated.
+npx skills update yanggggjie/terminal-tool-for-agents
 ```
 
 ## API 概览
@@ -156,7 +145,7 @@ tta sess start -> (tta act ... -> tta obs screen stable)* -> tta sess kill
 
 失败时输出一行 `error: <reason>`，退出码为 1。
 
-工作流见 [`skills/tta/zh/SKILL.md`](./skills/tta/zh/SKILL.md)；命令模板见 [`api-reference.md`](./skills/tta/zh/api-reference.md)；故障排查见 [`troubleshooting.md`](./skills/tta/zh/troubleshooting.md)。
+工作流见 [`skills-zh/tta/SKILL.md`](./skills-zh/tta/SKILL.md)；命令模板见 [`api-reference.md`](./skills-zh/tta/api-reference.md)；故障排查见 [`troubleshooting.md`](./skills-zh/tta/troubleshooting.md)。
 
 ## 环境要求
 
@@ -174,11 +163,11 @@ just install-dev-version
 会 build、全局安装当前仓库版本；`postinstall` 会自动 `tta sess killall` 停掉旧 server。
 
 
-如果你修改了 `tta`的skills，请给测试 Agent 加上这条指令：
+如果你修改了 `tta` 的 skills，请给测试 Agent 加上这条指令：
 
 ```text
-始终使用本地的tta skills，而不是安装的tta skills
-本地tta skills路径@YOURPATH/terminal-tool-for-agents/skills/tta
+始终使用本地的 tta skills，而不是安装的 tta skills
+本地 tta skills 路径 @YOURPATH/terminal-tool-for-agents/skills/tta
 ```
 
 切回 npm 上的正式版：

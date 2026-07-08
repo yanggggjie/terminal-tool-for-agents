@@ -18,4 +18,4 @@ Controller 派发任务并总结结果；Worker 只执行分配的具体任务�
 
 **请清晰告知正在使用 tta 的 Agent 你的权限范围（允许/禁止的操作、目录、是否 deploy 等）。被 tta 控制的 Coding Agent 以 auto 模式运行，会把 prompt 当授权执行。**
 
-完整工作流、Worker prompt contract 和启动命令见 [`skills/tta/zh/tta-agents-skill.md`](../../skills/tta/zh/tta-agents-skill.md) 与 [`worker-commands.md`](../../skills/tta/zh/worker-commands.md)。
+完整工作流、Worker prompt contract 和启动命令见 [`skills-zh/tta/tta-agents-skill.md`](../../skills-zh/tta/tta-agents-skill.md) 与 [`worker-commands.md`](../../skills-zh/tta/worker-commands.md)。

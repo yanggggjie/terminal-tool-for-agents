@@ -24,4 +24,4 @@ Human 定义目标、边界和验收标准。**Orchestrator** 负责拆分步骤
 
 可以同时保留多个 worker session 保存上下文；同一任务链上默认一次只推进一个步骤。
 
-创建或更新 `Orchestrator.md` 见 [`skills/tta/zh/create-tta-agens-orchestrator-skill.md`](../../skills/tta/zh/create-tta-agens-orchestrator-skill.md) 与 [`orchestrator-template.md`](../../skills/tta/zh/orchestrator-template.md)。
+创建或更新 `Orchestrator.md` 见 [`skills-zh/tta/create-tta-agens-orchestrator-skill.md`](../../skills-zh/tta/create-tta-agens-orchestrator-skill.md) 与 [`orchestrator-template.md`](../../skills-zh/tta/orchestrator-template.md)。

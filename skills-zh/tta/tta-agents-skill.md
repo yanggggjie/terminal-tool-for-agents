@@ -1,8 +1,6 @@
 ---
 name: tta-agents
-version: 0.1.12
-disable-model-invocation: true
-description: "用 tta session 驱动 Coding Agent CLI（Controller → Worker）。"
+description: "用 tta session 驱动 Coding Agent CLI（Controller → Worker）。委托编码、review、测试、调研任务给 Codex、Claude Code、Cursor Agent、OpenCode、Pi、Kimi Code 时使用。"
 ---
 
 # tta-agents
@@ -11,40 +9,49 @@ description: "用 tta session 驱动 Coding Agent CLI（Controller → Worker）
 
 创建或更新 `Orchestrator.md` 时，改读 [`create-tta-agens-orchestrator-skill.md`](create-tta-agens-orchestrator-skill.md)。
 
+## 语言
+
+- 与使用者的所有交流（总结、提问、状态汇报）必须用**使用者正在使用的语言**。
+- 发给 Worker 的 prompt 也必须用**使用者正在使用的语言**（Task、Allowed、Forbidden、完成要求等）；只有使用者明确要求时才用其他语言。
+- 下方示例为结构模板，实际内容按使用者语言填写。
+
 ## 步骤
 
 1. **启动 Worker** — session 名 `worker-<role>-<agent>`；启动命令见 [`worker-commands.md`](worker-commands.md)。
    - 完成：Worker session 运行中，初始屏已 `obs stable` 读取。
 2. **派发 prompt** — 每条 prompt 含 Task、Working directory、Allowed、Forbidden（含 `Using tta`）、完成摘要要求；用 quoted heredoc 发送，必要时 `enter` 提交。
    - 完成：prompt 已发送且提交。
-3. **观察** — 每次 `act` 后 `obs stable`；Controller 总结 Worker 输出，不直接转述未核对的屏幕片段。
+3. **观察** — 每次 `act` 后读屏；Controller 总结 Worker 输出，不直接转述未核对的屏幕片段。
+   - 单 Worker 阻塞等待：`obs stable`（等屏幕稳定）
+   - 多 session 轮询：`obs now`（立即返回当前屏）
    - 完成：Worker 任务完成或当前状态已总结。
 4. **收尾** — 一次性 Worker 完成后 `kill`；需保留上下文则保留 session。
    - 完成：session 处置已决定且已执行或说明。
 
 ## Worker Prompt Contract
 
+结构模板（内容按使用者语言填写）：
+
 ```bash
 tta act send text --sess=worker-review-codex <<'EOF'
-You are a coding worker. Do NOT use tta.
+你是一个 coding worker。不要使用 tta。
 
-Task: <具体任务>
-Working directory: /absolute/path/to/project
+任务：<具体任务>
+工作目录：/absolute/path/to/project
 
-Allowed:
+允许：
 - ...
 
-Forbidden:
+禁止：
 - ...
-- Using tta
+- 使用 tta
 
-When done, summarize what you did, files changed if any, and test status.
+完成后，总结你做了什么、改了哪些文件（如有）、测试状态。
 EOF
 tta act send key --sess=worker-review-codex --key=enter
 ```
 
 - Prompt 即授权；不要给出用户未授权的权限。
-- Prompt 使用使用者语言；只有用户明确要求时才用其他语言。
 
 ## Worker 特有故障
 
@@ -52,7 +59,7 @@ tta act send key --sess=worker-review-codex --key=enter
 |------|------|
 | Worker 没响应 | `obs stable` 确认状态；必要时 `enter` |
 | Worker 提示权限不足 | 不要自行扩大权限；向用户确认或重新发更小范围任务 |
-| Worker 尝试使用 tta | 发送更正 prompt，重申 `Forbidden: Using tta` |
+| Worker 尝试使用 tta | 发送更正 prompt，重申禁止项「使用 tta」 |
 | 输出不完整 | 继续 `obs stable` 或让 Worker 总结当前状态 |
 
 tta 通用故障见 [`troubleshooting.md`](troubleshooting.md)。
