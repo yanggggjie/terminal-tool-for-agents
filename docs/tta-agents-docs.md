@@ -1,6 +1,6 @@
 # tta-agents
 
-**tta-agents** is the layer on top of [tta](../README.md): the current agent acts as **Controller**, using tta to start, observe, and manage another Coding Agent CLI **Worker**.
+**tta-agents** is the layer on top of [tta](../README.en.md): the current agent acts as **Controller**, using tta to start, observe, and manage another Coding Agent CLI **Worker**.
 
 Useful for temporarily delegating one clear task, for example:
 

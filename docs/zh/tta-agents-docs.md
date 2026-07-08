@@ -1,6 +1,6 @@
 # tta-agents
 
-**tta-agents** 是 [tta](../../README.zh.md) 之上的一层：当前 Agent 作为 **Controller**，用 tta 启动、观察和管理另一个 Coding Agent CLI **Worker**。
+**tta-agents** 是 [tta](../../README.md) 之上的一层：当前 Agent 作为 **Controller**，用 tta 启动、观察和管理另一个 Coding Agent CLI **Worker**。
 
 适合临时委托一个清晰任务，例如：
 
