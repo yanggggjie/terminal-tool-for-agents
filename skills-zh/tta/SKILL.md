@@ -1,6 +1,6 @@
 ---
 name: tta
-version: 0.1.12
+version: 0.1.13
 description: "通过 PTY 操作交互式 CLI、TUI、REPL、开发服务器。交互式命令需要按键、读屏或持续观察时用 tta（如 lazygit、npm run dev、pdb、IPython、npm create）；普通非交互式命令用 shell（如 git status、npm test）。控制 Coding Agent CLI 时读 tta-agents-skill.md；创建 Orchestrator.md 时读 create-tta-agens-orchestrator-skill.md。"
 ---
 

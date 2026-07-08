@@ -1,6 +1,6 @@
 ---
 name: tta
-version: 0.1.12
+version: 0.1.13
 description: "Operate interactive CLIs, TUIs, REPLs, and dev servers through a PTY. Use tta for interactive commands that need keystrokes, screen reads, or continuous observation (such as lazygit, npm run dev, pdb, IPython, npm create); use shell for plain non-interactive commands (such as git status, npm test). When controlling a Coding Agent CLI, read tta-agents-skill.md; when creating Orchestrator.md, read create-tta-agens-orchestrator-skill.md."
 ---
 
