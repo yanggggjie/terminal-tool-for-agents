@@ -57,8 +57,6 @@ for (const rel of skillPaths) {
 const noVersionSkills = [
   "skills/tta/tta-agents-skill.md",
   "skills/tta/create-tta-agens-orchestrator-skill.md",
-  "skills-zh/tta/tta-agents-skill.md",
-  "skills-zh/tta/create-tta-agens-orchestrator-skill.md",
 ];
 for (const rel of noVersionSkills) {
   const skillContent = fs.readFileSync(path.join(root, rel), "utf8");
@@ -84,10 +82,6 @@ for (const rel of [
 }
 
 for (const rel of [
-  "skills-zh/tta/SKILL.md",
-  "skills-zh/tta/tta-agents-skill.md",
-  "docs/zh/tta-agents-docs.md",
-  "docs/zh/tta-agents-orchestrator.md",
   "docs/tta-agents-docs.md",
   "docs/tta-agents-orchestrator.md",
 ]) {

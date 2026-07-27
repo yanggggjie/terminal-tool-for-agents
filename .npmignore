@@ -19,6 +19,5 @@ node_modules/
 image.png
 rebuild.js
 
-# Chinese docs (repo only; not published to npm)
+# Repo docs (not published to npm; skills ship via skills/tta/)
 docs/
-skills-zh/

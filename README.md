@@ -7,8 +7,6 @@
 
 [![npm](https://img.shields.io/npm/v/terminal-tool-for-agents.svg)](https://www.npmjs.com/package/terminal-tool-for-agents)
 
-[English README](./README.en.md)
-
 </div>
 
 
@@ -16,7 +14,7 @@
 
 `tta` 是给 Agent 用的终端控制工具。你的 Agent 可以是 Claude Code 等 Coding Agent，也可以是 OpenClaw 等助手 Agent；使用 `tta` 后，它可以交互式地打开终端程序、观察屏幕、发送输入并等待输出稳定。
 
-适合普通 shell 一次性跑不完的任务：调试 `pdb`、操作 `IPython`、使用 `lazygit` 这类 TUI，或者启动另一个 **Coding Agent**（如 `Claude Code`，见 [tta-agents](./docs/zh/tta-agents-docs.md)）。
+适合普通 shell 一次性跑不完的任务：调试 `pdb`、操作 `IPython`、使用 `lazygit` 这类 TUI，或者启动另一个 **Coding Agent**（如 `Claude Code`，见 [tta-agents](./docs/tta-agents-docs.md)）。
 
 如果你还在手动操作终端里的交互式程序，手动开启多个 Coding Agent、传递上下文、分配任务、收集结果，或者等待一个 Agent 完成后再分配下一个任务，请尝试 `tta` 自动化。
 
@@ -38,7 +36,7 @@ npx skills add yanggggjie/terminal-tool-for-agents
 
 运行后 CLI 会交互式询问安装范围（全局/项目）、目标 agent（Cursor、Claude Code 等）和安装方式，按需选择即可。
 
-中文 skill 源文件在 [`skills-zh/tta/`](./skills-zh/tta/)，仅供仓库维护；用户安装请用上方 `npx skills add`。
+Skill 源文件在 [`skills/tta/`](./skills/tta/)。
 
 **让 Agent 使用 tta**：
 
@@ -59,8 +57,8 @@ tta sess watch
 | 方式 | 适合场景 | 文档 |
 |------|----------|------|
 | `tta` | 控制单个交互式终端程序，例如调试、菜单选择、查看开发服务输出 | 本 README |
-| `tta-agents` | 将单个明确任务委托给另一个 Coding Agent，例如使用 Codex 进行 review | [tta-agents](./docs/zh/tta-agents-docs.md) |
-| `tta-agents-orchestrator` | 编排多个 Coding Agent 处理长程任务，例如编码、review、测试分工协作 | [tta-agents-orchestrator](./docs/zh/tta-agents-orchestrator.md) |
+| `tta-agents` | 将单个明确任务委托给另一个 Coding Agent，例如使用 Codex 进行 review | [tta-agents](./docs/tta-agents-docs.md) |
+| `tta-agents-orchestrator` | 编排多个 Coding Agent 处理长程任务，例如编码、review、测试分工协作 | [tta-agents-orchestrator](./docs/tta-agents-orchestrator.md) |
 
 `tta` 不绑定某个 Agent。Codex、OpenCode 等 Coding Agent 可以使用，OpenClaw、Hermes 等助手 Agent 也可以用；例如让 OpenClaw 远程操控 Claude Code 写代码。硬性要求只有：安装 Node.js。
 
@@ -118,7 +116,7 @@ tta sess watch
 [用 Orchestrator 让 claude code 和 codex 下五子棋示例录屏](https://youtu.be/52gOo3hJYv4)
 
 
-## [为什么使用 tta-agents？](./docs/zh/why-tta-agents.md)
+## [为什么使用 tta-agents？](./docs/why-tta-agents.md)
 
 
 
@@ -145,7 +143,7 @@ tta sess start -> (tta act ... -> tta obs screen stable)* -> tta sess kill
 
 失败时输出一行 `error: <reason>`，退出码为 1。
 
-工作流见 [`skills-zh/tta/SKILL.md`](./skills-zh/tta/SKILL.md)；命令模板见 [`api-reference.md`](./skills-zh/tta/api-reference.md)；故障排查见 [`troubleshooting.md`](./skills-zh/tta/troubleshooting.md)。
+工作流见 [`skills/tta/SKILL.md`](./skills/tta/SKILL.md)；命令模板见 [`api-reference.md`](./skills/tta/api-reference.md)；故障排查见 [`troubleshooting.md`](./skills/tta/troubleshooting.md)。
 
 ## 环境要求
 

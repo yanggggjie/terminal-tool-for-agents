@@ -1,4 +1,4 @@
-# Worker startup commands
+# Worker 启动命令
 
 | Coding Agent | `--cmd="..."` |
 |--------------|---------------|
@@ -9,24 +9,24 @@
 | Pi | `pi` |
 | Kimi Code | `kimi --auto` |
 
-## Rules
+## 规则
 
-- When the task allows, **prefer the least-permissive command**.
-- High-permission flags (such as `--dangerously-skip-permissions`, `--yolo`) mean the Worker treats prompts as authorization and runs automatically; confirm the user has authorized before dispatching.
-- If the CLI is not on PATH, run `which <command>` first; if missing, tell the user — do not guess paths.
+- 在任务允许时，**优先使用权限更小的命令**。
+- 高权限 flag（如 `--dangerously-skip-permissions`、`--yolo`）意味着 Worker 会把 prompt 当授权自动执行；派发前必须确认使用者已授权。
+- CLI 不在 PATH 时先 `which <command>` 确认；找不到则告知使用者，不要猜测路径。
 
-## Session naming
+## Session 命名
 
-Format: `worker-<role>-<agent>`
+格式：`worker-<role>-<agent>`
 
-Examples:
+示例：
 
 - `worker-coder-codex`
 - `worker-review-claude`
 - `worker-test-cursor`
 - `worker-research-opencode`
 
-## Startup example
+## 启动示例
 
 ```bash
 tta sess start --sess=worker-review-codex --cmd="codex --sandbox workspace-write --ask-for-approval never" --cwd="/absolute/path/to/project"

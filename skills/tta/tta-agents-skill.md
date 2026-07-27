@@ -1,65 +1,65 @@
 ---
 name: tta-agents
-description: "Drive a Coding Agent CLI through tta sessions (Controller → Worker). Use when delegating coding, review, testing, or research tasks to Codex, Claude Code, Cursor Agent, OpenCode, Pi, or Kimi Code."
+description: "用 tta session 驱动 Coding Agent CLI（Controller → Worker）。委托编码、review、测试、调研任务给 Codex、Claude Code、Cursor Agent、OpenCode、Pi、Kimi Code 时使用。"
 ---
 
 # tta-agents
 
-The current agent is the **Controller**; the Coding Agent CLI started with `tta sess start` is the **Worker**. Workers must not call tta or load the tta skill. All `sess` / `act` / `obs` follow [`SKILL.md`](SKILL.md) and [`api-reference.md`](api-reference.md).
+当前 Agent 是 **Controller**；`tta sess start` 启动的 Coding Agent CLI 是 **Worker**。Worker 不得调用 tta、不得加载 tta skill。所有 `sess` / `act` / `obs` 遵守 [`SKILL.md`](SKILL.md) 与 [`api-reference.md`](api-reference.md)。
 
-When creating or updating `Orchestrator.md`, read [`create-tta-agens-orchestrator-skill.md`](create-tta-agens-orchestrator-skill.md) instead.
+创建或更新 `Orchestrator.md` 时，改读 [`create-tta-agens-orchestrator-skill.md`](create-tta-agens-orchestrator-skill.md)。
 
-## Language
+## 输出
 
-- All communication with the user (summaries, questions, status updates) must use **the language the user is using**.
-- Prompts sent to Workers must also use **the language the user is using** (Task, Allowed, Forbidden, completion requirements, etc.); use another language only when the user explicitly asks.
-- The example below is a structural template; fill in content in the user's language.
+- 对人读的说明用自然中文；专名、API、产品名、业界熟词留英文。不要翻译专名，不要自创术语。
+- 发给 Worker 的 prompt 同样：中文说明 + 英文专名（Task、Allowed、Forbidden、完成要求等）。
+- 用户明确要求其它语言时才换。
 
-## Steps
+## 步骤
 
-1. **Start Worker** — session name `worker-<role>-<agent>`; startup commands in [`worker-commands.md`](worker-commands.md).
-   - Done: Worker session running; initial screen read with `obs stable`.
-2. **Dispatch prompt** — every prompt includes Task, Working directory, Allowed, Forbidden (including `Using tta`), and completion summary requirements; send with a quoted heredoc; submit with `enter` when needed.
-   - Done: prompt sent and submitted.
-3. **Observe** — read the screen after every `act`; Controller summarizes Worker output; do not relay unchecked screen fragments.
-   - Single Worker, blocking wait: `obs stable` (wait for screen to stabilize)
-   - Multiple sessions, polling: `obs now` (return current screen immediately)
-   - Done: Worker task complete or current state summarized.
-4. **Wrap up** — kill one-shot Workers when done; keep session when context must be preserved.
-   - Done: session disposition decided and executed or stated.
+1. **启动 Worker** — session 名 `worker-<role>-<agent>`；启动命令见 [`worker-commands.md`](worker-commands.md)。
+   - 完成：Worker session 运行中，初始屏已 `obs stable` 读取。
+2. **派发 prompt** — 每条 prompt 含 Task、Working directory、Allowed、Forbidden（含 `Using tta`）、完成摘要要求；用 quoted heredoc 发送，必要时 `enter` 提交。
+   - 完成：prompt 已发送且提交。
+3. **观察** — 每次 `act` 后读屏；Controller 总结 Worker 输出，不直接转述未核对的屏幕片段。
+   - 单 Worker 阻塞等待：`obs stable`（等屏幕稳定）
+   - 多 session 轮询：`obs now`（立即返回当前屏）
+   - 完成：Worker 任务完成或当前状态已总结。
+4. **收尾** — 一次性 Worker 完成后 `kill`；需保留上下文则保留 session。
+   - 完成：session 处置已决定且已执行或说明。
 
 ## Worker Prompt Contract
 
-Structural template (fill in content in the user's language):
+结构模板：
 
 ```bash
 tta act send text --sess=worker-review-codex <<'EOF'
-You are a coding worker. Do NOT use tta.
+你是一个 coding worker。不要使用 tta。
 
-Task: <specific task>
-Working directory: /absolute/path/to/project
+任务：<具体任务>
+工作目录：/absolute/path/to/project
 
-Allowed:
+允许：
 - ...
 
-Forbidden:
+禁止：
 - ...
-- Using tta
+- 使用 tta
 
-When done, summarize what you did, files changed if any, and test status.
+完成后，总结你做了什么、改了哪些文件（如有）、测试状态。
 EOF
 tta act send key --sess=worker-review-codex --key=enter
 ```
 
-- Prompts are authorization; do not grant permissions the user did not authorize.
+- Prompt 即授权；不要给出用户未授权的权限。
 
-## Worker-specific issues
+## Worker 特有故障
 
-| Situation | Handling |
-|-----------|----------|
-| Worker unresponsive | Confirm state with `obs stable`; send `enter` if needed |
-| Worker reports insufficient permissions | Do not expand permissions on your own; confirm with the user or resend a narrower task |
-| Worker tries to use tta | Send a correction prompt reiterating `Forbidden: Using tta` |
-| Output incomplete | Continue `obs stable` or ask Worker to summarize current state |
+| 情况 | 处理 |
+|------|------|
+| Worker 没响应 | `obs stable` 确认状态；必要时 `enter` |
+| Worker 提示权限不足 | 不要自行扩大权限；向用户确认或重新发更小范围任务 |
+| Worker 尝试使用 tta | 发送更正 prompt，重申禁止项「使用 tta」 |
+| 输出不完整 | 继续 `obs stable` 或让 Worker 总结当前状态 |
 
-General tta issues: [`troubleshooting.md`](troubleshooting.md).
+tta 通用故障见 [`troubleshooting.md`](troubleshooting.md)。

@@ -1,57 +1,57 @@
 ---
 name: tta
 version: 0.1.13
-description: "Operate interactive CLIs, TUIs, REPLs, and dev servers through a PTY. Use tta for interactive commands that need keystrokes, screen reads, or continuous observation (such as lazygit, npm run dev, pdb, IPython, npm create); use shell for plain non-interactive commands (such as git status, npm test). When controlling a Coding Agent CLI, read tta-agents-skill.md; when creating Orchestrator.md, read create-tta-agens-orchestrator-skill.md."
+description: "通过 PTY 操作交互式 CLI、TUI、REPL、开发服务器。交互式命令需要按键、读屏或持续观察时用 tta（如 lazygit、npm run dev、pdb、IPython、npm create）；普通非交互式命令用 shell（如 git status、npm test）。控制 Coding Agent CLI 时读 tta-agents-skill.md；创建 Orchestrator.md 时读 create-tta-agens-orchestrator-skill.md。"
 ---
 
 # tta
 
-Use shell for plain non-interactive commands; use `tta` for interactive commands.
+普通非交互式命令用 shell；交互式命令用 `tta`。
 
-## Language
+## 输出
 
-Always communicate with the user, write comments, and write explanations in **the language the user is using**. Switch languages only when the user explicitly asks.
+对人读的说明用自然中文；专名、API、产品名、业界熟词留英文（如 `session`、`PR`、`endpoint`）。不要翻译专名，不要自创术语。用户明确要求其它语言时才换。
 
-## Command shorthand
+## 命令简写
 
-In this document, `sess` / `act` / `obs stable` / `obs now` mean:
+下文 `sess` / `act` / `obs stable` / `obs now` 分别指：
 
 - `tta sess ...`
 - `tta act ...`
 - `tta obs screen stable --sess=<name>`
 - `tta obs screen now --sess=<name>`
 
-Full command templates: [`api-reference.md`](api-reference.md).
+完整命令模板见 [`api-reference.md`](api-reference.md)。
 
-## When not to use tta
+## 何时不用
 
-Use shell, not tta, for:
+以下用 shell，不用 tta：
 
-- One-shot, non-interactive commands that exit when done (such as `git status`, `npm test`, `ls`)
-- Pipes or redirects that do not need screen reads or keystrokes
+- 一次性、无交互、跑完即退出的命令（如 `git status`、`npm test`、`ls`）
+- 不需要读屏或按键的管道/重定向命令
 
-## Steps
+## 步骤
 
-1. **Decide if the command is interactive** — REPLs, TUIs, interactive wizards, and long-running processes whose output must be observed (such as `npm create vite@latest`, `lazygit`, `npm run dev`) are interactive → use tta; plain one-shot bash commands are non-interactive → use shell.
-   - Done: you have chosen tta or shell.
-2. **Start session** — see [`api-reference.md`](api-reference.md).
-   - Done: `tta sess start` succeeded and `obs stable` read the initial screen.
-3. **stable loop** — menus/confirmations use `send key`; free-form text uses `send text` with a quoted heredoc; after every `act`, run `obs stable`.
-   - Done: task goal reached, or dev server output observed as needed.
-   - Exception: continuously refreshing screens such as `htop` use `obs now`, not `stable`.
-4. **Cleanup** — `sess kill` one-shot tasks; keep dev-server sessions while observing.
-   - Done: one-shot tasks killed, or retained session name and state stated.
+1. **判定是否为交互式命令** — REPL、TUI、交互式向导、需观察输出的长驻进程（如 `npm create vite@latest`、`lazygit`、`npm run dev`）是交互式命令，用 tta；普通 bash 一次性命令是非交互式命令，用 shell。
+   - 完成：已明确「用 tta / 用 shell」。
+2. **启动 session** — 见 [`api-reference.md`](api-reference.md)。
+   - 完成：`tta sess start` 成功，且 `obs stable` 读到初始屏。
+3. **stable loop** — 菜单/确认用 `send key`；自由文本用 quoted heredoc 的 `send text`；每次 `act` 后 `obs stable`。
+   - 完成：任务目标达成，或 dev server 已观察到所需输出。
+   - 例外：`htop` 等持续刷新屏用 `obs now`，不等待 `stable`。
+4. **清理** — 一次性任务 `sess kill`；dev server 观察期间保留。
+   - 完成：一次性任务已 kill，或有意保留的 session 名与状态已说明。
 
 ```text
 tta sess start -> obs stable -> (act -> obs stable)* -> [sess kill]
 ```
 
-## Branches
+## 分支
 
-- Controlling a Coding Agent CLI → read [`tta-agents-skill.md`](tta-agents-skill.md)
-- Creating or updating `Orchestrator.md` → read [`create-tta-agens-orchestrator-skill.md`](create-tta-agens-orchestrator-skill.md)
+- 控制 Coding Agent CLI → 读 [`tta-agents-skill.md`](tta-agents-skill.md)
+- 创建或更新 `Orchestrator.md` → 读 [`create-tta-agens-orchestrator-skill.md`](create-tta-agens-orchestrator-skill.md)
 
-## Reference
+## 参考
 
-- API and command templates → [`api-reference.md`](api-reference.md)
-- Stuck or failed → [`troubleshooting.md`](troubleshooting.md)
+- API、命令模板 → [`api-reference.md`](api-reference.md)
+- 卡住或失败 → [`troubleshooting.md`](troubleshooting.md)

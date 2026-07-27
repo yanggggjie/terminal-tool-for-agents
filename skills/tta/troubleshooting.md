@@ -1,14 +1,14 @@
-# Troubleshooting
+# 故障排查
 
-| Situation | Handling |
-|-----------|----------|
-| Screen stuck | Try `enter`, then `arrow_up` / `arrow_down` / `tab`, then `obs screen stable` |
-| `act` failed | Run `tta sess list`; if `exited`, read errors with `obs`, then `sess kill` |
-| TUI does not respond | Check whether `send text` was used by mistake; use `send key` for menus and confirmations |
-| heredoc does not finish | Cancel with `ctrl+c`; ensure the ending `EOF` is flush-left and on its own line |
-| REPL stuck at continuation prompt | Try an empty line; if still stuck, use `ctrl+c`, then switch to a script, paste/editor mode, or `exec("""...""")` |
-| Start failed | `sess list` -> `obs screen stable` to read errors -> `sess kill` |
-| Monitoring apps (such as `htop`) | Screen will not stabilize; use `obs screen now`, not `obs screen stable` |
-| Output exceeds screen | `obs screen scroll --dire=down` to page; `scroll --dire=top` to return to top |
-| dev server still running | Do not `sess kill`; observe with `obs`; clean up only after confirming |
-| `sess list` status | `running`: `act`/`obs` work; `exited`: only `obs` for final output, then `kill` |
+| 情况 | 处理 |
+|------|------|
+| 屏幕卡住 | 先 `enter`，再试 `arrow_up` / `arrow_down` / `tab`，然后 `obs screen stable` |
+| `act` 失败 | `tta sess list` 看状态；若 `exited`，先 `obs` 读错误，再 `sess kill` |
+| TUI 无反应 | 检查是否误用 `send text`；菜单和确认框改用 `send key` |
+| heredoc 结束不了 | `ctrl+c` 取消；确认结尾 `EOF` 顶格且单独一行 |
+| REPL 卡在多行提示符 | 先试空行；仍卡住用 `ctrl+c`，改用脚本、paste/editor 模式或 `exec("""...""")` |
+| 启动失败 | `sess list` -> `obs screen stable` 读错误 -> `sess kill` |
+| 监控型应用（如 `htop`） | 屏幕不会稳定；用 `obs screen now`，不要用 `obs screen stable` |
+| 输出超出屏幕 | `obs screen scroll --dire=down` 翻页；读完再 `scroll --dire=top` 回顶 |
+| dev server 还在跑 | 不要 `sess kill`；用 `obs` 观察；确认后再清理 |
+| `sess list` 状态 | `running` 可 `act`/`obs`；`exited` 只能 `obs` 读最终输出，然后 `kill` |

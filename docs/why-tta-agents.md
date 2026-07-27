@@ -1,37 +1,37 @@
-# Why tta-agents?
+# 为什么 tta-agents？
 
-## Can multiple coding agents run in parallel?
+## 可以并行多个 Coding Agent 吗？
 
-Yes. `tta obs screen now` returns immediately, which makes it useful for polling the current state of multiple sessions. `tta obs screen stable` waits until the screen is stable, which is better when you want to wait for one Worker to finish.
+可以。`tta obs screen now` 会立即返回，适合轮询多个 session 的当前状态；`tta obs screen stable` 会等待屏幕稳定后返回，适合顺序等待某个 Worker 完成。
 
-For long tasks, the recommended default is blocking observation: assign one task, wait for completion, summarize the result, then decide the next step.
+为了长任务的稳定性和逻辑正确性，默认推荐阻塞式观察：派发一个任务，等待完成，总结结果，再决定下一步。
 
-## How is this different from subagents?
+## 和 subagents 有什么不同？
 
-They operate at different layers. Subagents are good at reducing the main agent's context load. They are usually short-lived, single-task workers without continuous context.
+层次不同。subagents 更适合缓解主 Agent 的上下文压力，通常是短任务、单次执行、上下文不连续的 Worker。
 
-tta-agents is an application-level organization pattern: the current agent acts as **Controller**, can start another full Coding Agent CLI **Worker**, observe its screen output through tta, keep its session context, and continue assigning tasks when needed. A coding agent started by tta-agents can still use subagents inside its own environment.
+tta-agents 是 Agent 应用层的组织方式：当前 Agent 作为 **Controller** 可以启动另一个完整 Coding Agent CLI **Worker**，并通过 tta 观察它的屏幕输出、保留它的 session 上下文、在需要时继续给它派任务。由 tta-agents 启动的 Coding Agent 仍然可以在自己的环境里使用 subagents。
 
-It also lets you combine strengths across different harnesses: use Claude Code for day-to-day coding, Codex for review, Pi for browser or extension-heavy tasks, and Kimi Code for fast exploration.
+这也让你可以组合不同 harness 的优点：例如用 Claude Code 日常编码，用 Codex 做 review，用 Pi 处理需要浏览器或扩展能力的任务，用 Kimi Code 做快速探索。
 
-## Why use a TUI instead of a unified SDK?
+## 为什么走 TUI，而不是统一 SDK？
 
-Different coding agents have very different SDKs, abstraction levels, and permission models. Designing one unified SDK abstraction for all of them would be heavy and likely to lag behind product changes.
+不同 Coding Agent 的 SDK 形态、抽象层级和权限模型差异很大。为它们设计一个统一 SDK 抽象会很重，也容易落后于各自产品变化。
 
-TUIs are more consistent: start a command, send input, read the screen. tta controls the PTY layer so one agent can use another agent in almost the same way a human uses a CLI. When humans need to observe, `tta sess watch` shows the same session directly.
+TUI 则相对一致：启动命令、发送输入、读取屏幕。tta 选择控制 PTY 这层，让 Agent 使用另一个 Agent 的方式尽量接近人类使用 CLI 的方式。需要人工观察时，也可以用 `tta sess watch` 直接看同一个 session。
 
-## How is this different from tmux, cmux, or herdr?
+## 和 tmux、cmux、herdr 有什么不同？
 
-tmux, cmux, and herdr are all strong terminal or multi-agent control tools. tta has a narrower goal: let agents reliably control interactive terminals through an API, especially coding agent CLIs.
+tmux、cmux、herdr 都是很好的终端或多 Agent 控制工具。tta 的目标更窄：聚焦让 Agent 通过 API 稳定控制交互式终端，尤其是控制 Coding Agent CLI。
 
-In other words, tta-agents is not a general terminal workspace. It is a lightweight protocol for agent-controlled agents.
+也就是说，tta-agents 不是通用终端工作台，而是面向 Agent 控制 Agent 的轻量应用。
 
-## What exactly is tta-agents-orchestrator?
+## tta-agents-orchestrator 到底是什么？
 
-It is a separation-of-concerns practice:
+它把调度和执行拆开：
 
-- The **Orchestrator** only schedules: break down tasks, assign work, observe, summarize, and decide the next step.
-- Workers do the concrete work: coding, review, testing, research, browser automation, and so on.
-- Each Worker can keep its own context. Even if a Worker context becomes complex, the Orchestrator can use a new prompt to bring it back to the goal and boundaries.
+- **Orchestrator** 只做调度：拆任务、派发、观察、总结、决定下一步。
+- Workers 做具体工作：编码、review、测试、调研、浏览器自动化等。
+- 每个 Worker 可以保留自己的上下文；即使某个 Worker 上下文变复杂，Orchestrator 仍能用新的 prompt 拉回目标和边界。
 
-See [tta-agents-orchestrator](./tta-agents-orchestrator.md) for details.
+详情见 [tta-agents-orchestrator](./tta-agents-orchestrator.md)。

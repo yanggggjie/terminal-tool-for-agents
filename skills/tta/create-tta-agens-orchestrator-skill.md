@@ -1,54 +1,51 @@
 ---
 name: create-tta-agens-orchestrator
-description: "Create or update Orchestrator.md, codifying a Human → Orchestrator → Workers workflow. Use when splitting coder/reviewer/tester long-horizon work, multi-agent orchestration, or in-project scheduling rules."
+description: "创建或更新 Orchestrator.md，固化 Human → Orchestrator → Workers 工作流。拆分 coder/reviewer/tester 长程任务、多 Agent 编排、项目内调度规范时使用。"
 ---
 
 # create-tta-agens-orchestrator
 
-Write executable in-project guidance so the current agent acts as **Orchestrator** and uses tta to start and manage Coding Agent Workers. `sess` / `act` / `obs` follow [`SKILL.md`](SKILL.md) and [`api-reference.md`](api-reference.md).
+写一份可执行的项目内说明，让当前 Agent 作为 **Orchestrator**，用 tta 启动和管理 Coding Agent Workers。`sess` / `act` / `obs` 遵守 [`SKILL.md`](SKILL.md) 与 [`api-reference.md`](api-reference.md)。
 
-## Language
+## 输出
 
-- `Orchestrator.md` must be written **entirely in the language the user is using** (section headings, principles, permissions, scheduling notes, Worker prompt templates, etc.).
-- Communication and delivery notes to the user must also use the user's language.
-- Use another language only when the user explicitly asks.
-- [`orchestrator-template.md`](orchestrator-template.md) provides a structural reference; when writing to the project, translate all content into the user's language. Do not copy English placeholders verbatim.
+- `Orchestrator.md` 与对人读的说明：自然中文；专名、API、产品名、业界熟词留英文。不要翻译专名，不要自创术语。
+- 用户明确要求其它语言时才换。
+- 结构参考 [`orchestrator-template.md`](orchestrator-template.md)；写入项目时替换占位内容，不要另起一套语言副本。
 
-## Core protocol
+## 核心协议
 
-`Orchestrator.md` must make clear:
+`Orchestrator.md` 必须明确：
 
-1. Human defines the goal, boundaries, permissions, and acceptance criteria.
-2. Orchestrator only schedules. It does not read project code or perform coding, testing, review, research, or file reads/writes.
-3. Workers execute concrete tasks. They must not use tta, must not load the tta skill, and must not communicate directly with each other.
-4. Default scheduling is serial: assign → wait → observe → summarize → decide the next step.
-5. Multiple worker sessions may stay open to preserve context; one task chain advances one step at a time by default.
-6. A `Permissions` section is required. Default permissions are read/write access to the directory containing `Orchestrator.md` and its subdirectories.
-7. Worker startup commands must be inlined; do not reference files outside the project.
+1. Human 定义目标、边界、权限和验收标准。
+2. Orchestrator 只做调度，不读项目代码，不执行编码、测试、review、调研或文件读写。
+3. Workers 执行具体任务，不能使用 tta，不能加载 tta skill，彼此不直接通信。
+4. 默认串行调度：派发 → 等待 → 观察 → 总结 → 决定下一步。
+5. 可保留多个 worker session 保存上下文；同一任务链默认一次只推进一步。
+6. 必须包含 `权限` 章节；默认权限是 `Orchestrator.md` 所在目录及其子目录的读写权限。
+7. 必须内联 Worker 启动命令，不引用项目外文件。
 
-## Steps
+## 步骤
 
-1. **Confirm directory** — default to workspace root if the user did not specify.
-   - Done: target path confirmed.
-2. **Confirm Workers** — e.g. coder, reviewer, tester, researcher, browser-qa; if unclear, use the minimal set coder / reviewer / tester.
-   - Done: required Worker roles listed.
-3. **Confirm language** — use the language the user is using.
-   - Done: language for `Orchestrator.md` confirmed.
-4. **Write template** — full template in [`orchestrator-template.md`](orchestrator-template.md); replace placeholders with project-specific commands, directories, and permissions; inline Worker startup commands.
-   - Done: file written; placeholders replaced; language matches the user.
-5. **Self-contained** — no dependency on README, docs, or external links; no relative links to files that do not exist in the project.
-   - Done: file stands alone.
-6. **Merge existing file** — if `Orchestrator.md` exists, read first and update without overwriting existing constraints.
-   - Done: existing constraints preserved.
-7. **Deliver** — in the user's language, remind them that default permissions can be tightened or expanded in `Permissions`.
-   - Done: user knows permissions are adjustable.
+1. **确认目录** — 用户未指定时默认当前工作区根目录。
+   - 完成：目标路径已确定。
+2. **确认 Workers** — 例如 coder、reviewer、tester、researcher、browser-qa；不明确时给最小组合 coder / reviewer / tester。
+   - 完成：所需 Worker 角色已列出。
+3. **写入模板** — 完整模板见 [`orchestrator-template.md`](orchestrator-template.md)；用项目实际命令、目录和权限替换占位内容；将 Worker 启动命令内联到文件中。
+   - 完成：文件已写入，占位内容已替换。
+4. **自包含** — 不依赖 README、docs 或外部链接；不加入项目内不存在的相对链接。
+   - 完成：文件可独立执行。
+5. **合并已有文件** — 若 `Orchestrator.md` 已存在，先读再更新，不覆盖用户已有约束。
+   - 完成：已有约束已保留。
+6. **交付** — 提醒用户可在 `权限` 章节收紧或放宽默认权限。
+   - 完成：用户已知权限可调整。
 
-Minimal version: keep Purpose, Roles, Permissions, Scheduling, Worker startup commands, and Worker Prompt Contract.
+最小版本保留：目标、角色、权限、调度、Worker 启动命令、Worker Prompt Contract 六节。
 
-## Issues
+## 故障
 
-| Situation | Handling |
-|-----------|----------|
-| Permissions unclear | Write default permissions; remind user they can edit `Permissions` |
-| User asks Orchestrator to code directly | Explain protocol limit: substantive work must go to Workers |
-| User language unclear | Follow the current conversation language; do not default to English |
+| 情况 | 处理 |
+|------|------|
+| 权限不清 | 写入默认权限，并提醒用户可修改 `权限` 章节 |
+| 用户要求 Orchestrator 直接编码 | 说明协议限制：实质性工作必须交给 Workers |
+| 用户要求其它语言 | 按其要求；否则保持中文说明 + 英文专名 |
