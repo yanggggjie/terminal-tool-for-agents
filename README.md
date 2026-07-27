@@ -22,21 +22,18 @@ Fork 自 [tui-use](https://github.com/onesuper/tui-use) 并改造为 `tta`。感
 
 ## 快速开始
 
-**安装 CLI：**
-
 ```bash
-npm install -g terminal-tool-for-agents
+npx -y terminal-tool-for-agents@latest init -y
 ```
 
-**安装 skill：**
+会全局安装 CLI（`tta`）与 skill（`universal` + `claude-code`）。Skill 源文件在 [`skills/tta/`](./skills/tta/)。
+
+开发（本仓库）：
 
 ```bash
-npx skills add yanggggjie/terminal-tool-for-agents
+npm install
+npm run dev:install
 ```
-
-运行后 CLI 会交互式询问安装范围（全局/项目）、目标 agent（Cursor、Claude Code 等）和安装方式，按需选择即可。
-
-Skill 源文件在 [`skills/tta/`](./skills/tta/)。
 
 **让 Agent 使用 tta**：
 
@@ -123,8 +120,7 @@ tta sess watch
 ## 更新
 
 ```bash
-npm update -g terminal-tool-for-agents
-npx skills update yanggggjie/terminal-tool-for-agents
+npx -y terminal-tool-for-agents@latest init -y
 ```
 
 ## API 概览
@@ -133,6 +129,7 @@ tta 的一切操作都在 **session** 内进行（`--sess=`）：
 
 | API | 命令 | 作用 |
 |-----|------|------|
+| **init** | `-y` | 安装全局 CLI + skill（非交互） |
 | **sess** | `start`, `kill`, `killall`, `list`, `keys`, `watch` | 创建、停止、列出 session；人类用 watch UI |
 | **act** | `send text`, `send key` | 向 **运行中** 的 session 发送输入 |
 | **obs** | `screen now`, `screen stable`, `screen scroll` | 读取 session 屏幕 |
@@ -148,30 +145,22 @@ tta sess start -> (tta act ... -> tta obs screen stable)* -> tta sess kill
 ## 环境要求
 
 - **Node.js** 22.x–26.x（`engines`：`>=22.0.0 <27.0.0`）；仓库含 `.nvmrc`（`24`）供本地开发
-- 安装时会自动运行 `postinstall`，将 node-pty prebuild 复制到 `build/Release` 并验证 PTY 可用；无需手动 `approve-scripts`
+- 安装 CLI 时会自动运行 `postinstall`，将 node-pty prebuild 复制到 `build/Release` 并验证 PTY 可用；skill 由 `init` 安装，不走 postinstall
 
 ## 开发
 
-本地开发统一执行：
+改 `src/` 或 `skills/` 后：
 
 ```bash
-just install-dev-version
+npm run dev:install
 ```
 
-会 build、全局安装当前仓库版本；`postinstall` 会自动 `tta sess killall` 停掉旧 server。
-
-
-如果你修改了 `tta` 的 skills，请给测试 Agent 加上这条指令：
-
-```text
-始终使用本地的 tta skills，而不是安装的 tta skills
-本地 tta skills 路径 @YOURPATH/terminal-tool-for-agents/skills/tta
-```
+会 build，并把**本仓库**的 CLI（`tta`）与 skill 装到全局（`universal` + `claude-code`）。日常开发不要用 `npx …@latest`（那是线上包）。`postinstall` 会自动 `tta sess killall` 停掉旧 server。
 
 切回 npm 上的正式版：
 
 ```bash
-just install-npm-version
+npx -y terminal-tool-for-agents@latest init -y
 ```
 
 ## 许可证

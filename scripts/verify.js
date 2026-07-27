@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Build and verify the npm tarball includes runtime assets.
+ * Build, selfcheck, and verify the npm tarball includes runtime assets.
  */
 const { execSync } = require("child_process");
 const fs = require("fs");
@@ -10,6 +10,7 @@ const root = path.join(__dirname, "..");
 const skillPaths = require("./skill-paths.js");
 const required = [
   "dist/cli.js",
+  "dist/selfcheck.js",
   "dist/server.js",
   "dist/watch-ui/index.html",
   "dist/watch-ui/app.js",
@@ -26,6 +27,7 @@ function run(cmd) {
 }
 
 run("npm run build");
+run("node dist/selfcheck.js");
 
 const { findNodePtyRoot } = require("./install.js");
 const ptyRoot = findNodePtyRoot(root);

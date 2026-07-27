@@ -11,10 +11,11 @@ import { SERVER_URL } from "./server";
 import { validateSessionName } from "./session";
 import { SUPPORTED_KEYS } from "./keys";
 import { Response, ErrorResponse, ScreenResponse, ListResponse } from "./protocol";
+import { handleInit } from "./init";
 import { version } from "../package.json";
 
 const COMMAND_NAME = "tta";
-const TOP_LEVEL_COMMANDS = new Set(["sess", "act", "obs", "help"]);
+const TOP_LEVEL_COMMANDS = new Set(["sess", "act", "obs", "init", "help"]);
 const DOCS_URL = "https://github.com/yanggggjie/terminal-tool-for-agents";
 const SCROLL_DIRECTIONS = ["up", "down", "top", "bottom"] as const;
 type ScrollDirection = (typeof SCROLL_DIRECTIONS)[number];
@@ -30,10 +31,13 @@ function bold(s: string): string {
 
 const HELP_API = `
 ${bold("API")}    ${bold("Commands")}                              ${bold("Example")}
+${bold("init")}   -y                                    tta init -y
 ${bold("sess")}   start, kill, killall, list, keys      tta sess start --sess=dev --cmd="npm run dev" --cwd="/path/to/project"
 ${bold("act")}    send text, send key                   tta act send text --sess=dev  # stdin (heredoc)
 ${bold("obs")}    screen now, stable, scroll            tta obs screen stable --sess=dev
 
+${bold("Install")}:   npx -y terminal-tool-for-agents@latest init -y
+${bold("Dev")}:       npm run dev:install
 ${bold("Workflow")}:  sess start  →  (act → obs screen stable)*  →  sess kill
 ${bold("Watch UI")}:  tta sess watch  (humans only — agents use obs)
 ${bold("Docs")}:      ${DOCS_URL}
@@ -53,7 +57,7 @@ function firstPositionalArg(args: string[]): string | undefined {
 
 function warnWrongTopLevel(got: string): void {
   process.stderr.write(
-    `${RED}Unknown top-level command "${got}". Use tta sess, tta act, or tta obs.${RESET}\n\n`
+    `${RED}Unknown top-level command "${got}". Use tta init, tta sess, tta act, or tta obs.${RESET}\n\n`
   );
 }
 
@@ -133,6 +137,14 @@ function handleObs(res: Response): void {
   const screen = (res as ScreenResponse).screen;
   if (screen) console.log(screen);
 }
+
+program
+  .command("init")
+  .description("Install global CLI + skill (non-interactive)")
+  .option("-y, --yes", "Confirm non-interactive install")
+  .action(async (options: { yes?: boolean }) => {
+    await handleInit({ yes: Boolean(options.yes) });
+  });
 
 // --- sess: session lifecycle ---
 

@@ -1,7 +1,7 @@
 # tta local dev — run `just` to list recipes
 #
-#   just install-dev-version — build + npm install -g . (local repo → global `tta`)
-#   just install-npm-version — npm install -g terminal-tool-for-agents (restore published release)
+#   just install-dev-version — npm run dev:install（本仓库 build + init -y）
+#   just install-npm-version — 正式版 init -y
 
 _default:
     @just --list
@@ -10,17 +10,16 @@ _default:
 build:
     npm run build
 
-# Build + global install from this repo (postinstall runs `tta sess killall`)
+# Build + 本仓库 init -y（CLI + skill）
 install-dev-version:
     npm install
-    npm run build
-    npm install -g .
+    npm run dev:install
 
-# Reinstall the published npm release (postinstall runs `tta sess killall`)
+# 正式 npm 包 init -y（CLI + skill）
 install-npm-version:
-    npm install -g terminal-tool-for-agents
+    npx -y terminal-tool-for-agents@latest init -y
 
-# Build + pack sanity checks
+# Build + selfcheck + pack sanity checks
 test:
     npm test
 

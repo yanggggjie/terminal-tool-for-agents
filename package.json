@@ -36,6 +36,8 @@
   "scripts": {
     "build": "node scripts/copy-watch-vendor.js && rm -rf dist && tsc && cp -r src/watch-ui dist/watch-ui && chmod +x dist/cli.js",
     "start": "node dist/cli.js",
+    "selfcheck": "npm run build && node dist/selfcheck.js",
+    "dev:install": "npm run build && node dist/cli.js init -y",
     "test": "node scripts/verify.js",
     "postinstall": "node scripts/install.js",
     "prepack": "npm run build",
