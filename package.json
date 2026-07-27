@@ -1,6 +1,6 @@
 {
   "name": "terminal-tool-for-agents",
-  "version": "0.1.13",
+  "version": "1.0.0",
   "description": "terminal-tool-for-agents (tta) — terminal tool for AI agents. Command: tta. Package: terminal-tool-for-agents.",
   "license": "MIT",
   "repository": {
