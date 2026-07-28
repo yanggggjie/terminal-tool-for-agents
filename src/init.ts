@@ -8,8 +8,6 @@ import * as path from "path";
 
 const PKG_ROOT = path.join(__dirname, "..");
 const SKILL_NAME = "tta";
-const NPM_NAME = "terminal-tool-for-agents";
-const GITHUB_SOURCE = "yanggggjie/terminal-tool-for-agents";
 
 export type InitOptions = {
   yes: boolean;
@@ -25,8 +23,11 @@ function cleanNpmEnv(): NodeJS.ProcessEnv {
   return env;
 }
 
-function hasBundledSkill(): boolean {
-  return fs.existsSync(path.join(PKG_ROOT, "skills", SKILL_NAME, "SKILL.md"));
+function requireBundledSkill(): void {
+  if (!fs.existsSync(path.join(PKG_ROOT, "skills", SKILL_NAME, "SKILL.md"))) {
+    console.error(`包内缺少 skills/${SKILL_NAME}/SKILL.md`);
+    process.exit(1);
+  }
 }
 
 function run(cmd: string, inherit = true): void {
@@ -38,26 +39,20 @@ function run(cmd: string, inherit = true): void {
 }
 
 function installCli(): void {
-  if (hasBundledSkill()) {
-    // ponytail: 无 watch — 重装会把 dist 拷进 global prefix；改代码后需 rebuild 再 init
-    console.log("正在从本包安装 CLI（npm i -g .）...");
-    run("npm install -g .");
-  } else {
-    console.log(`正在全局安装 CLI（npm i -g ${NPM_NAME}）...`);
-    run(`npm install -g ${NPM_NAME}`);
-  }
+  // ponytail: 无 watch — 重装会把 dist 拷进 global prefix；改代码后需 rebuild 再 init
+  console.log("正在从本包安装 CLI（npm i -g .）...");
+  run("npm install -g .");
   console.log("✓ CLI 已就绪（若配置了 npm global bin，则 tta 在 PATH 上）\n");
 }
 
 function installSkills(): void {
-  const source = hasBundledSkill() ? PKG_ROOT : GITHUB_SOURCE;
-  console.log(`正在安装 skill（${source}）...`);
+  console.log(`正在安装 skill（${PKG_ROOT}）...`);
   const args = [
     "npx",
     "-y",
     "skills",
     "add",
-    source,
+    PKG_ROOT,
     "-g",
     "-y",
     "-a",
@@ -82,6 +77,8 @@ export async function handleInit(options: InitOptions): Promise<void> {
     process.exit(1);
   }
 
+  requireBundledSkill();
+
   console.log("\n  terminal-tool-for-agents init\n");
 
   try {
@@ -96,7 +93,7 @@ export async function handleInit(options: InitOptions): Promise<void> {
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`Skill 安装失败：${msg}`);
     console.error(
-      `重试：npx -y skills add ${hasBundledSkill() ? PKG_ROOT : GITHUB_SOURCE} -g -y -a universal -a claude-code -s ${SKILL_NAME}`,
+      `重试：npx -y skills add ${PKG_ROOT} -g -y -a universal -a claude-code -s ${SKILL_NAME}`,
     );
     process.exit(1);
   }

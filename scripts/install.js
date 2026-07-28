@@ -142,14 +142,10 @@ function ensureNodePty(nodePtyDir) {
   exitWithBuildError();
 }
 
-if (require.main === module) {
-  const nodePtyDir = findNodePtyRoot();
-  if (!nodePtyDir) {
-    process.stderr.write(`[${PKG}] node-pty not found\n`);
-    process.exit(1);
-  }
-  ensureNodePty(nodePtyDir);
-  killallSessions();
+const nodePtyDir = findNodePtyRoot();
+if (!nodePtyDir) {
+  process.stderr.write(`[${PKG}] node-pty not found\n`);
+  process.exit(1);
 }
-
-module.exports = { findNodePtyRoot, testNodePty, ensureNodePty, killallSessions };
+ensureNodePty(nodePtyDir);
+killallSessions();

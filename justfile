@@ -19,11 +19,7 @@ install-dev-version:
 install-npm-version:
     npx -y terminal-tool-for-agents@latest init -y
 
-# Build + selfcheck + pack sanity checks
-test:
-    npm test
-
-# Release: bump → sync skills → commit → tag → npm publish → push
+# Release: bump → commit → tag → npm publish → push
 # Usage: just release patch | minor | major
 release level:
     npm run release -- {{level}}
