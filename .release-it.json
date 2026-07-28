@@ -10,10 +10,6 @@
     "push": true,
     "pushArgs": ["--follow-tags"]
   },
-  "hooks": {
-    "before:init": "node scripts/verify.js",
-    "after:bump": "node scripts/sync-skill-version.js"
-  },
   "npm": {
     "publish": true
   },
